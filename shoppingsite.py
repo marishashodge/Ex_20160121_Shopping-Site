@@ -7,7 +7,7 @@ Authors: Joel Burton, Christian Fernandez, Meggie Mahnken.
 """
 
 
-from flask import Flask, render_template, redirect, flash, session
+from flask import Flask, render_template, redirect, flash, session, request
 import jinja2
 
 import melons
@@ -51,7 +51,6 @@ def show_melon(melon_id):
     """
 
     melon = melons.get_by_id(melon_id)
-    print melon
     return render_template("melon_details.html",
                            display_melon=melon)
 
@@ -63,7 +62,7 @@ def shopping_cart():
     # TODO: Display the contents of the shopping cart.
 
     # The logic here will be something like:
-    #fine a secret key, and once everything is set up, try to put something in the session and then print it out).
+    #find a secret key, and once everything is set up, try to put something in the session and then print it out).
     # - get the list-of-ids-of-melons from the session cart
     # - loop over this list:
     #   - keep track of information about melon types in the cart
@@ -71,7 +70,18 @@ def shopping_cart():
     #   - keep track of the total amt of the entire order
     # - hand to the template the total order cost and the list of melon types
 
-    return render_template("cart.html")
+
+    # melon_ids_in_cart = sessions['cart']
+    # total = 0
+    # for i in range(len(melon_ids_in_cart)):
+    #
+    # loop over list and create dict with id = key and qty = value
+    # loop through this list to extract melon data
+    # make a new dict with melon id as key; value is name, qty, price
+
+    # total += _____
+
+    return render_template("cart.html", session=session)
 
 
 @app.route("/add_to_cart/<int:id>")
@@ -81,24 +91,30 @@ def add_to_cart(id):
     When a melon is added to the cart, redirect browser to the shopping cart
     page and display a confirmation message: 'Successfully added to cart'.
     """
+    qty = int(request.args.get("qty"))
+    print '\n\n\n',qty,'\n\n\n'
 
     print "session is ", session
     if 'cart' in session:
+        if qty > 1:
+            for i in range(qty-1):
+                session['cart'].append(id)
         session['cart'].append(id)
     else:
-        session["cart"] = []
+        session["cart"] = [id]
+
     print "session is ", session
+    print "Cart: ", session['cart']
 
+    # Need to eventually add flash message here "successfully added to cart"
 
-    # TODO: Finish shopping cart functionality
-
-    # The logic here should be something like:
-    #
-    # - add the id of the melon they bought to the cart in the session
-    melon_list = melons.get_all()
+    #melon_list = melons.get_all()
     
-    return render_template("/cart.html", melon_list=melon_list)
+    
+    
+    return redirect("/cart")
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 @app.route("/login", methods=["GET"])
 def show_login():

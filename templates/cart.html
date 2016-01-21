@@ -4,11 +4,9 @@
 {% block body %}
 
     {{ session }}
-    {{ melon_list }}
 
     <table class="table table-striped">
         <thead>
-        
         <tr>
             <th>Melon Name</th>
             <th>Quantity</th>
@@ -18,23 +16,20 @@
         </thead>
 
         <tbody>
+        
+        <!-- for-loop starts here -->
         <tr>
-            <td> {{ melon_list[1] }} </td>
-            <td></td>
-            <td> {{ melon_list[2] }} </td>
-            <td> 
-
-
-            <td>Ancient Watermelon</td>
-            <td>5</td>
-            <td>$3.00</td>
-            <td>$15.00</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
         </tr>
+        <!-- for-loop ends here -->
 
         </tbody>
     </table>
 
-    <h3>Total: $27.00</h3>
+    <h3>Total: {{ total }}</h3>
 
     <a href="/checkout" class="btn btn-large btn-primary">Check Out</a>
 
